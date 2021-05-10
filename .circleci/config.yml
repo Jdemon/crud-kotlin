@@ -6,7 +6,7 @@ executors:
       - image: circleci/openjdk:11-jdk-browsers
 
 jobs:
-  lint_and_test:
+  lint_and_build:
     executor: gradle
     environment:
       # Customize the JVM maximum heap limit
@@ -15,6 +15,8 @@ jobs:
     working_directory: ~/crud-kotlin
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 18.06.0-ce
       - restore_cache:
           key: crud-kotlin-{{ checksum "build.gradle.kts" }}
       - run: gradle dependencies
@@ -28,8 +30,11 @@ jobs:
       - run:
           name: Gradle Test
           command: gradle test
+      - run:
+          name: Build
+          command: docker build -t ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}
 workflows:
   version: 2.1
   ci:
     jobs:
-      - lint_and_test
+      - lint_and_build
