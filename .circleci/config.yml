@@ -32,7 +32,7 @@ jobs:
           command: gradle test
       - run:
           name: Build
-          command: docker build -t ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}
+          command: docker build -t ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}
 workflows:
   version: 2.1
   ci:
