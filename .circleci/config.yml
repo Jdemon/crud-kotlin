@@ -31,6 +31,9 @@ jobs:
           name: Gradle Test
           command: gradle test
       - run:
+          name: Gradle Build
+          command: gradle build
+      - run:
           name: Build
           command: docker build -t ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} .
 workflows:
