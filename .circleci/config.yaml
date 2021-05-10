@@ -1,0 +1,25 @@
+version: 2.1
+
+executors:
+  gradle:
+    docker:
+      - image: circleci/openjdk:11-jdk-browsers
+
+jobs:
+  lint:
+    executor: gradle
+    steps:
+      - checkout
+      - restore_cache:
+          key: crud-kotlin-{{ checksum "build.gradle.kts" }}
+      - run: gradle clean detekt ktlintCheck --info
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: crud-kotlin-{{ checksum "build.gradle.kts" }}
+
+workflows:
+  version: 2.1
+  test_and_build:
+    jobs:
+      - lint
