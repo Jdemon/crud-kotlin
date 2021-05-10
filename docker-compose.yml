@@ -1,0 +1,14 @@
+version: 3.2
+services:
+  database:
+    restart: always
+    container_name: postgresql
+    image: postgres
+    volumes:
+      - ./data/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'admin'
+      POSTGRES_DB: 'customer'
+    ports:
+      - 5432:5432
