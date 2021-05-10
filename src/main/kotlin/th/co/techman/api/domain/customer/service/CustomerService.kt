@@ -1,6 +1,7 @@
 package th.co.techman.api.domain.customer.service
 
 import org.springframework.stereotype.Service
+import th.co.techman.api.domain.common.exception.DataNotFoundException
 import th.co.techman.api.domain.customer.model.Customer
 import th.co.techman.api.domain.customer.port.incoming.DeleteCustomerUseCase
 import th.co.techman.api.domain.customer.port.incoming.GetCustomerUseCase
@@ -35,6 +36,9 @@ class CustomerService(
 
     override fun updateCustomer(updateCustomerCommand: UpdateCustomerUseCase.UpdateCustomerCommand): Customer {
         val (id, firstName, lastName, citizenId, passportNo) = updateCustomerCommand
+        if (!getCustomerPort.exist(id)) {
+            throw DataNotFoundException("No found customer.")
+        }
         return updateCustomerPort.updateCustomer(Customer(id, firstName, lastName, passportNo, citizenId))
     }
 
