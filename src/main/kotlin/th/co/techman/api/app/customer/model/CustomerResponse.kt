@@ -12,12 +12,12 @@ data class CustomerResponse(
 ) {
     companion object {
         fun fromCustomer(customer: Customer): CustomerResponse {
-            return customer.customerData
+            return customer.customerResponse
         }
     }
 }
 
-internal val Customer.customerData: CustomerResponse
+internal val Customer.customerResponse: CustomerResponse
     get() = CustomerResponse(
         id,
         firstName,

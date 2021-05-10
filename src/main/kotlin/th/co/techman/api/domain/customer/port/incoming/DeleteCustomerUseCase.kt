@@ -3,18 +3,16 @@ package th.co.techman.api.domain.customer.port.incoming
 import org.valiktor.functions.isNotNull
 import org.valiktor.functions.isNotZero
 import org.valiktor.validate
-import th.co.techman.api.domain.customer.model.Customer
 
-interface GetCustomerUseCase {
-    fun getCustomer(): List<Customer>
-    fun getCustomer(getCustomerCommand: GetCustomerCommand): Customer
+interface DeleteCustomerUseCase {
+    fun deleteCustomer(deleteCustomerCommand: DeleteCustomerCommand)
 
-    data class GetCustomerCommand(
+    data class DeleteCustomerCommand(
         val id: Long
     ) {
         init {
             validate(this) {
-                validate(GetCustomerCommand::id)
+                validate(DeleteCustomerCommand::id)
                     .isNotNull()
                     .isNotZero()
             }

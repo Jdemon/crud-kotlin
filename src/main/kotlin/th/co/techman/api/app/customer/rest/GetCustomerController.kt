@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import th.co.techman.api.app.customer.model.CustomerResponse
-import th.co.techman.api.app.customer.model.customerData
+import th.co.techman.api.app.customer.model.customerResponse
 import th.co.techman.api.domain.customer.port.incoming.GetCustomerUseCase
 
 @RestController
@@ -16,22 +16,13 @@ class GetCustomerController {
     @Autowired
     lateinit var getCustomerUseCase: GetCustomerUseCase
 
-
     @GetMapping
-    fun getAllCustomer(
-    ): List<CustomerResponse> {
-        val customer = getCustomerUseCase.getCustomer()
-        return customer?.map { CustomerResponse.fromCustomer(it)!! }
-    }
+    fun getAllCustomer() = getCustomerUseCase.getCustomer().map { CustomerResponse.fromCustomer(it) }
 
     @GetMapping(
         value = ["{id}"]
     )
-    fun getCustomer(
-        @PathVariable(value = "id") id: Long
-    ): CustomerResponse {
-        return getCustomerUseCase.getCustomer(id.run {
+    fun getCustomer(@PathVariable(value = "id") id: Long) = getCustomerUseCase.getCustomer(id.run {
             GetCustomerUseCase.GetCustomerCommand(id)
-        }).customerData
-    }
+        }).customerResponse
 }
