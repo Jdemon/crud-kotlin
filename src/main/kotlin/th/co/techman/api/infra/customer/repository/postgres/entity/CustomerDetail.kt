@@ -6,13 +6,16 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "customers")
-open class CustomerDetail: BaseModel() {
+open class CustomerDetail : BaseModel() {
     @Column(length = 255, nullable = false)
     open var firstName: String = ""
+
     @Column(length = 255, nullable = false)
     open var lastName: String = ""
+
     @Column(length = 50, nullable = false)
     open var citizenId: String = ""
+
     @Column(length = 50)
     open var passportNo: String? = null
 }

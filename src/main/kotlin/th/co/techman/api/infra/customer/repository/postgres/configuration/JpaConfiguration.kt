@@ -6,7 +6,6 @@ import org.springframework.data.domain.AuditorAware
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.transaction.annotation.EnableTransactionManagement
 
-
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableTransactionManagement

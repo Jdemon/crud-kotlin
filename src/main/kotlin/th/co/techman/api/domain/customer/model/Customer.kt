@@ -2,7 +2,7 @@ package th.co.techman.api.domain.customer.model
 
 import java.io.Serializable
 
-open class Customer: Serializable {
+open class Customer : Serializable {
 
     constructor()
 

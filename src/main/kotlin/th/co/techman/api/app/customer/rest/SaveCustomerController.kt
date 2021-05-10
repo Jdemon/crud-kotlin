@@ -18,7 +18,9 @@ class SaveCustomerController {
     lateinit var saveCustomerUseCase: SaveCustomerUseCase
 
     @PostMapping
-    fun saveCustomer(@RequestBody customerRequest: CustomerRequest): CustomerResponse {
+    fun saveCustomer(
+        @RequestBody customerRequest: CustomerRequest
+    ): CustomerResponse {
         return saveCustomerUseCase.saveCustomer(
             customerRequest.run {
                 SaveCustomerUseCase.SaveCustomerCommand(

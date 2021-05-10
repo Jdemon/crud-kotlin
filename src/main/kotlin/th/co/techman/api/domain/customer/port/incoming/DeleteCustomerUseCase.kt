@@ -17,6 +17,5 @@ interface DeleteCustomerUseCase {
                     .isNotZero()
             }
         }
-
     }
 }
