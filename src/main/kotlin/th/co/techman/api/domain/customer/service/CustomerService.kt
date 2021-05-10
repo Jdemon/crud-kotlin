@@ -18,19 +18,20 @@ class CustomerService(
     val updateCustomerPort: UpdateCustomerPort,
     val deleteCustomerPort: DeleteCustomerPort
 ) : GetCustomerUseCase, SaveCustomerUseCase, UpdateCustomerUseCase, DeleteCustomerUseCase {
-    override fun getCustomer(): List<Customer> = getCustomerPort.getCustomer();
-
+    override fun getCustomer(): List<Customer> = getCustomerPort.getCustomer()
 
     override fun getCustomer(getCustomerCommand: GetCustomerUseCase.GetCustomerCommand) =
-        getCustomerPort.getCustomer(getCustomerCommand.id);
+        getCustomerPort.getCustomer(getCustomerCommand.id)
 
     override fun saveCustomer(saveCustomerCommand: SaveCustomerUseCase.SaveCustomerCommand) =
-        saveCustomerPort.saveCustomer(Customer().also {
-            it.citizenId = saveCustomerCommand.citizenId
-            it.firstName = saveCustomerCommand.firstName
-            it.lastName = saveCustomerCommand.lastName
-            it.passportNo = saveCustomerCommand.passportNo
-        })
+        saveCustomerPort.saveCustomer(
+            Customer().also {
+                it.citizenId = saveCustomerCommand.citizenId
+                it.firstName = saveCustomerCommand.firstName
+                it.lastName = saveCustomerCommand.lastName
+                it.passportNo = saveCustomerCommand.passportNo
+            }
+        )
 
     override fun updateCustomer(updateCustomerCommand: UpdateCustomerUseCase.UpdateCustomerCommand): Customer {
         val (id, firstName, lastName, citizenId, passportNo) = updateCustomerCommand

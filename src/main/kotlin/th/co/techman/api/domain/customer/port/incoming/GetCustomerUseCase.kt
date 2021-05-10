@@ -19,6 +19,5 @@ interface GetCustomerUseCase {
                     .isNotZero()
             }
         }
-
     }
 }

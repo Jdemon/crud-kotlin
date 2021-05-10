@@ -1,13 +1,10 @@
-package th.co.techman.api
-
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
-
-@SpringBootTest
-class CrudKotlinApplicationTests {
-
-    @Test
-    fun contextLoads() {
-    }
-
-}
+// package th.co.techman.api
+//
+// import org.junit.jupiter.api.Test
+// import org.springframework.boot.test.context.SpringBootTest
+//
+// @SpringBootTest
+// class CrudKotlinApplicationTests {
+//     @Test
+//     fun contextLoads() {}
+// }

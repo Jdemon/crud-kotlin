@@ -21,9 +21,9 @@ class PostgresCustomerRepository(
         customerRepository.findAll().forEach {
             val customer = Customer()
             mapper.map(it, customer)
-            customerEntities.add(customer);
+            customerEntities.add(customer)
         }
-        return customerEntities;
+        return customerEntities
     }
 
     override fun getCustomer(id: Long): Customer {
@@ -39,10 +39,10 @@ class PostgresCustomerRepository(
 
     override fun deleteCustomer(id: Long) = customerRepository.deleteById(id)
 
-    private fun saveOrUpdate(customer: Customer): Customer{
+    private fun saveOrUpdate(customer: Customer): Customer {
         var customerDetail = CustomerDetail()
         mapper.map(customer, customerDetail)
-        customerDetail = customerRepository.save(customerDetail);
+        customerDetail = customerRepository.save(customerDetail)
         mapper.map(customerDetail, customer)
         return customer
     }

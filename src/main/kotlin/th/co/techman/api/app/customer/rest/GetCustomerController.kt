@@ -22,7 +22,9 @@ class GetCustomerController {
     @GetMapping(
         value = ["{id}"]
     )
-    fun getCustomer(@PathVariable(value = "id") id: Long) = getCustomerUseCase.getCustomer(id.run {
+    fun getCustomer(@PathVariable(value = "id") id: Long) = getCustomerUseCase.getCustomer(
+        id.run {
             GetCustomerUseCase.GetCustomerCommand(id)
-        }).customerResponse
+        }
+    ).customerResponse
 }

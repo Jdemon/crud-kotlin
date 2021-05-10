@@ -3,7 +3,7 @@ package th.co.techman.api.infra.customer.repository.postgres.configuration
 import org.springframework.data.domain.AuditorAware
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
-import java.util.*
+import java.util.Optional
 
 class AuditorAwareImpl : AuditorAware<String> {
     override fun getCurrentAuditor(): Optional<String> {
