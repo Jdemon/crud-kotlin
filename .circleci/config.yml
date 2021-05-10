@@ -27,7 +27,7 @@ jobs:
           command: gradle clean detekt ktlintCheck --info
       - run:
           name: Gradle Test
-          command: test
+          command: gradle test
 workflows:
   version: 2.1
   ci:
