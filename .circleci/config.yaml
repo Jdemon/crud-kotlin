@@ -6,20 +6,26 @@ executors:
       - image: circleci/openjdk:11-jdk-browsers
 
 jobs:
-  lint:
+  lint_and_test:
     executor: gradle
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx1024m
+      TERM: dumb
+    working_directory: ~/crud-kotlin
     steps:
       - checkout
       - restore_cache:
           key: crud-kotlin-{{ checksum "build.gradle.kts" }}
-      - run: gradle clean detekt ktlintCheck --info
+      - run: gradle dependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: crud-kotlin-{{ checksum "build.gradle.kts" }}
-
+      - run: gradle clean detekt ktlintCheck --info
+      - run: gradle test
 workflows:
   version: 2.1
-  test_and_build:
+  lint_and_test:
     jobs:
       - lint
