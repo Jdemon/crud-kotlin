@@ -22,8 +22,12 @@ jobs:
           paths:
             - ~/.gradle
           key: crud-kotlin-{{ checksum "build.gradle.kts" }}
-      - run: gradle clean detekt ktlintCheck --info
-      - run: gradle test
+      - run:
+          name: Kotlin Check Lint & Code Smell
+          command: gradle clean detekt ktlintCheck --info
+      - run:
+          name: Gradle Test
+          command: test
 workflows:
   version: 2.1
   ci:
