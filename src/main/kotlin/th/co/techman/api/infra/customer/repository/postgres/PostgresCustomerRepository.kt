@@ -9,6 +9,7 @@ import th.co.techman.api.domain.customer.port.outgoing.SaveCustomerPort
 import th.co.techman.api.domain.customer.port.outgoing.UpdateCustomerPort
 import th.co.techman.api.infra.customer.repository.postgres.entity.CustomerDetail
 import th.co.techman.api.infra.customer.repository.postgres.repository.CustomerRepository
+import javax.persistence.EntityNotFoundException
 
 @Repository
 class PostgresCustomerRepository(
@@ -35,7 +36,15 @@ class PostgresCustomerRepository(
 
     override fun saveCustomer(customer: Customer) = saveOrUpdate(customer)
 
-    override fun updateCustomer(customer: Customer) = saveOrUpdate(customer)
+    override fun updateCustomer(customer: Customer): Customer {
+        if (
+            customer.id != null &&
+            !customerRepository.existsById(customer.id!!)
+        ) {
+            throw EntityNotFoundException("No found customer.")
+        }
+        return saveOrUpdate(customer)
+    }
 
     override fun deleteCustomer(id: Long) = customerRepository.deleteById(id)
 
