@@ -28,10 +28,7 @@ jobs:
           name: Kotlin Check Lint & Code Smell
           command: gradle clean detekt ktlintCheck --info
       - run:
-          name: Gradle Test
-          command: gradle test
-      - run:
-          name: Gradle Build
+          name: Gradle Test Build
           command: gradle build
       - run:
           name: Build
