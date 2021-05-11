@@ -6,4 +6,5 @@ import java.time.Duration
 @ConfigurationProperties(prefix = "redis.cache")
 class CacheTtlConfiguration {
     lateinit var customerTtl: Duration
+    lateinit var customerAllTtl: Duration
 }

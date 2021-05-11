@@ -40,6 +40,7 @@ dependencies {
     implementation("com.google.guava:guava:30.1.1-jre")
     implementation("org.valiktor:valiktor-javatime:0.11.0")
     implementation("org.valiktor:valiktor-spring-boot-starter:0.11.0")
+    implementation("redis.clients:jedis:3.6.0")
     runtimeOnly("org.postgresql:postgresql")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     kapt("org.springframework.boot:spring-boot-configuration-processor")

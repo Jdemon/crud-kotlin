@@ -20,6 +20,12 @@ class PostgresCustomerRepository(
     val mapper: Mapper
 ) : GetCustomerPort, SaveCustomerPort, UpdateCustomerPort, DeleteCustomerPort {
 
+    @Cacheable(
+        value = [CacheConfiguration.CUSTOMER_ALL],
+        unless = "#result==null",
+        cacheManager = "cacheManager",
+        keyGenerator = "keyGenerator"
+    )
     override fun getCustomer(): List<Customer> {
         val customerEntities: MutableList<Customer> = mutableListOf()
         customerRepository.findAll().forEach {
@@ -31,7 +37,7 @@ class PostgresCustomerRepository(
     }
 
     @Cacheable(
-        CacheConfiguration.CUSTOMER,
+        value = [CacheConfiguration.CUSTOMER],
         unless = "#result==null",
         cacheManager = "cacheManager",
         key = "#id"
@@ -48,7 +54,7 @@ class PostgresCustomerRepository(
     override fun saveCustomer(customer: Customer) = saveOrUpdate(customer)
 
     @CachePut(
-        CacheConfiguration.CUSTOMER,
+        value = [CacheConfiguration.CUSTOMER],
         unless = "#result==null",
         cacheManager = "cacheManager",
         key = "#customer.id"
@@ -56,7 +62,7 @@ class PostgresCustomerRepository(
     override fun updateCustomer(customer: Customer) = saveOrUpdate(customer)
 
     @CacheEvict(
-        CacheConfiguration.CUSTOMER,
+        value = [CacheConfiguration.CUSTOMER],
         cacheManager = "cacheManager",
         key = "#id"
     )

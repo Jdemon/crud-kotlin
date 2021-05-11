@@ -29,6 +29,7 @@ class CacheConfiguration : CachingConfigurerSupport() {
 
     companion object {
         const val CUSTOMER = "customer"
+        const val CUSTOMER_ALL = "customer-all"
     }
 
     lateinit var cacheMap: Map<String, Duration>
@@ -36,7 +37,8 @@ class CacheConfiguration : CachingConfigurerSupport() {
     @PostConstruct
     fun init() {
         cacheMap = mapOf(
-            CUSTOMER to cacheTtlConfiguration.customerTtl
+            CUSTOMER to cacheTtlConfiguration.customerTtl,
+            CUSTOMER_ALL to cacheTtlConfiguration.customerAllTtl
         )
     }
 
