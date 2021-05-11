@@ -1,12 +1,16 @@
 package th.co.techman.api.infra.customer.repository.postgres
 
 import org.dozer.Mapper
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Repository
 import th.co.techman.api.domain.customer.model.Customer
 import th.co.techman.api.domain.customer.port.outgoing.DeleteCustomerPort
 import th.co.techman.api.domain.customer.port.outgoing.GetCustomerPort
 import th.co.techman.api.domain.customer.port.outgoing.SaveCustomerPort
 import th.co.techman.api.domain.customer.port.outgoing.UpdateCustomerPort
+import th.co.techman.api.infra.configuration.CacheConfiguration
 import th.co.techman.api.infra.customer.repository.postgres.entity.CustomerDetail
 import th.co.techman.api.infra.customer.repository.postgres.repository.CustomerRepository
 
@@ -17,7 +21,7 @@ class PostgresCustomerRepository(
 ) : GetCustomerPort, SaveCustomerPort, UpdateCustomerPort, DeleteCustomerPort {
 
     override fun getCustomer(): List<Customer> {
-        var customerEntities: MutableList<Customer> = mutableListOf()
+        val customerEntities: MutableList<Customer> = mutableListOf()
         customerRepository.findAll().forEach {
             val customer = Customer()
             mapper.map(it, customer)
@@ -26,6 +30,12 @@ class PostgresCustomerRepository(
         return customerEntities
     }
 
+    @Cacheable(
+        CacheConfiguration.CUSTOMER,
+        unless = "#result==null",
+        cacheManager = "cacheManager",
+        key = "#id"
+    )
     override fun getCustomer(id: Long): Customer {
         val customerDetail = customerRepository.findById(id)
         val customer = Customer()
@@ -37,8 +47,19 @@ class PostgresCustomerRepository(
 
     override fun saveCustomer(customer: Customer) = saveOrUpdate(customer)
 
+    @CachePut(
+        CacheConfiguration.CUSTOMER,
+        unless = "#result==null",
+        cacheManager = "cacheManager",
+        key = "#customer.id"
+    )
     override fun updateCustomer(customer: Customer) = saveOrUpdate(customer)
 
+    @CacheEvict(
+        CacheConfiguration.CUSTOMER,
+        cacheManager = "cacheManager",
+        key = "#id"
+    )
     override fun deleteCustomer(id: Long) = customerRepository.deleteById(id)
 
     private fun saveOrUpdate(customer: Customer): Customer {

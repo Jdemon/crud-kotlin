@@ -1,7 +1,13 @@
 version: '3.2'
 services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    restart: unless-stopped
   database:
-    restart: always
+    restart: unless-stopped
     container_name: postgresql
     image: postgres
     volumes:
