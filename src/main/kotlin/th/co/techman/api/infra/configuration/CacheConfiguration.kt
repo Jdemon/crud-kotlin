@@ -1,15 +1,17 @@
 package th.co.techman.api.infra.configuration
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.common.base.Joiner
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.CachingConfigurerSupport
-import org.springframework.cache.annotation.EnableCaching
 import org.springframework.cache.interceptor.KeyGenerator
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.cache.RedisCacheConfiguration
 import org.springframework.data.redis.cache.RedisCacheManager
+import org.springframework.data.redis.cache.RedisCacheWriter
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext
@@ -17,8 +19,12 @@ import java.time.Duration
 import javax.annotation.PostConstruct
 
 @Configuration
-@EnableConfigurationProperties(value = [CacheTtlConfiguration::class])
-@EnableCaching
+@EnableConfigurationProperties(
+    value = [
+        RedisProperties::class,
+        CacheTtlConfiguration::class
+    ]
+)
 class CacheConfiguration : CachingConfigurerSupport() {
 
     @Autowired
@@ -46,14 +52,15 @@ class CacheConfiguration : CachingConfigurerSupport() {
     fun cacheManager(redisCacheConfiguration: RedisCacheConfiguration) = RedisCacheManager
         .builder(redisConnectionFactory)
         .initialCacheNames(cacheMap.keys)
+        .cacheWriter(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
         .withInitialCacheConfigurations(cacheMap.mapValues { redisCacheConfiguration.entryTtl(it.value) })
         .build()
 
     @Bean
-    fun redisCacheConfiguration() = RedisCacheConfiguration.defaultCacheConfig()
+    fun redisCacheConfiguration(objectMapper: ObjectMapper) = RedisCacheConfiguration.defaultCacheConfig()
         .serializeValuesWith(
-            RedisSerializationContext.SerializationPair.fromSerializer<Any>(
-                GenericJackson2JsonRedisSerializer()
+            RedisSerializationContext.SerializationPair.fromSerializer(
+                GenericJackson2JsonRedisSerializer(objectMapper)
             )
         )
 
